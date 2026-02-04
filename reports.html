@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Reports | Daily Expense Tracker</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<div class="layout">
+
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <h2>💸 Expense Tracker</h2>
+    <ul>
+      <li><a href="dashboard.html">Dashboard</a></li>
+      <li><a href="transactions.html">Transactions</a></li>
+      <li><a href="budget.html">Budget</a></li>
+      <li><a href="goals.html">Goals</a></li>
+      <li class="active"><a href="reports.html">Reports</a></li>
+      <li><a href="settings.html">Settings</a></li>
+    </ul>
+  </aside>
+
+  <!-- Main Content -->
+  <main class="main">
+
+    <!-- Page Title -->
+    <div class="page-header">
+      <h2>📊 Monthly Expense Report</h2>
+      <p style="color:#64748B;">Overview of your spending by category</p>
+    </div>
+
+    <!-- Summary Cards -->
+    <section class="report-cards">
+      <div class="report-card blue">
+        <p>Total Expense</p>
+        <h3>₹22,000</h3>
+      </div>
+      <div class="report-card green">
+        <p>Highest Spending</p>
+        <h3>Food</h3>
+      </div>
+      <div class="report-card red">
+        <p>Lowest Spending</p>
+        <h3>Shopping</h3>
+      </div>
+    </section>
+
+    <!-- Chart Section -->
+    <section class="chart-box">
+      <h3>Category-wise Expense Chart</h3>
+
+      <div class="bar-chart">
+
+        <div class="bar-item">
+          <div class="bar food" style="height:85%">
+            <span class="bar-value">85%</span>
+          </div>
+          <span>Food</span>
+        </div>
+
+        <div class="bar-item">
+          <div class="bar travel" style="height:60%">
+            <span class="bar-value">60%</span>
+          </div>
+          <span>Travel</span>
+        </div>
+
+        <div class="bar-item">
+          <div class="bar shopping" style="height:45%">
+            <span class="bar-value">45%</span>
+          </div>
+          <span>Shopping</span>
+        </div>
+
+        <div class="bar-item">
+          <div class="bar other" style="height:70%">
+            <span class="bar-value">70%</span>
+          </div>
+          <span>Other</span>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- Details Table -->
+    <section class="table-box">
+      <h3>Expense Breakdown</h3>
+      <table>
+        <tr>
+          <th>Category</th>
+          <th>Amount</th>
+          <th>Share</th>
+        </tr>
+        <tr>
+          <td>Food</td>
+          <td class="neg">₹8,000</td>
+          <td>36%</td>
+        </tr>
+        <tr>
+          <td>Travel</td>
+          <td class="neg">₹5,000</td>
+          <td>23%</td>
+        </tr>
+        <tr>
+          <td>Shopping</td>
+          <td class="neg">₹4,000</td>
+          <td>18%</td>
+        </tr>
+        <tr>
+          <td>Other</td>
+          <td class="neg">₹5,000</td>
+          <td>23%</td>
+        </tr>
+      </table>
+    </section>
+
+    <!-- Insight Box -->
+    <section class="insight-box">
+      💡 <b>Insight:</b> Food category has the highest expense this month.  
+      Consider setting a stricter food budget to save more.
+    </section>
+
+  </main>
+</div>
+<script src="js/app.js"></script>
+
+</body>
+</html>

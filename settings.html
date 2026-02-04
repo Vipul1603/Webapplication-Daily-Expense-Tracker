@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Settings | Daily Expense Tracker</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<div class="layout">
+
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <h2>💸 Expense Tracker</h2>
+    <ul>
+      <li><a href="dashboard.html">Dashboard</a></li>
+      <li><a href="transactions.html">Transactions</a></li>
+      <li><a href="budget.html">Budget</a></li>
+      <li><a href="goals.html">Goals</a></li>
+      <li><a href="reports.html">Reports</a></li>
+      <li class="active"><a href="settings.html">Settings</a></li>
+    </ul>
+  </aside>
+
+  <!-- Main -->
+  <main class="main">
+
+    <div class="page-header">
+      <h2>⚙️ Settings</h2>
+      <p style="color:#64748B;">Manage your preferences & security</p>
+    </div>
+
+    <!-- Settings Cards -->
+    <section class="settings-grid">
+
+      <!-- Profile -->
+      <div class="setting-card">
+        <h4>👤 Profile</h4>
+        <input type="text" placeholder="Username" value="Vipul">
+        <input type="email" placeholder="Email" value="vipul@gmail.com">
+      </div>
+
+      <!-- Currency -->
+      <div class="setting-card">
+        <h4>💱 Currency</h4>
+        <select id="currencySelect">
+          <option value="INR">INR ₹</option>
+          <option value="USD">USD $</option>
+          <option value="EUR">EUR €</option>
+        </select>
+      </div>
+
+      <!-- Appearance -->
+      <div class="setting-card">
+        <h4>🎨 Appearance</h4>
+        <label class="toggle">
+          <input type="checkbox" id="darkToggle">
+          <span class="slider"></span>
+          Dark Mode
+        </label>
+      </div>
+
+      <!-- Alerts -->
+      <div class="setting-card">
+        <h4>🔔 Alerts</h4>
+        <label class="toggle">
+          <input type="checkbox" id="alertToggle" checked>
+          <span class="slider"></span>
+          Budget Alert (80%)
+        </label>
+      </div>
+
+      <!-- Security -->
+      <div class="setting-card">
+        <h4>🔐 Security</h4>
+        <input type="password" placeholder="New Password">
+        <input type="password" placeholder="Confirm Password">
+      </div>
+
+      <!-- Data -->
+      <div class="setting-card">
+        <h4>📂 Data</h4>
+        <button class="outline-btn">Download CSV</button>
+        <button class="danger-btn">Clear Data</button>
+      </div>
+
+    </section>
+
+    <!-- Save Button -->
+    <button class="save-settings" onclick="saveSettings()">💾 Save Changes</button>
+
+  </main>
+</div>
+
+<!-- JS FILE (VERY IMPORTANT) -->
+<script src="js/app.js"></script>
+
+</body>
+</html>

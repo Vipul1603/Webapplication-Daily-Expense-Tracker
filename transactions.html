@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Transactions | Daily Expense Tracker</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<div class="layout">
+
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <h2>💸 Expense Tracker</h2>
+    <ul>
+      <li><a href="dashboard.html">Dashboard</a></li>
+      <li class="active"><a href="transactions.html">Transactions</a></li>
+      <li><a href="budget.html">Budget</a></li>
+      <li><a href="goals.html">Goals</a></li>
+      <li><a href="reports.html">Reports</a></li>
+      <li><a href="settings.html">Settings</a></li>
+    </ul>
+  </aside>
+
+  <!-- Main -->
+  <main class="main">
+
+    <!-- Header -->
+    <div class="page-header">
+      <h2>📅 All Transactions</h2>
+
+      <div class="header-actions">
+        <input type="text" id="searchInput" placeholder="🔍 Search category">
+
+        <div class="date-picker-btn">
+          <span id="dateText">📅 Select Date</span>
+          <input type="date" id="filterDate">
+        </div>
+
+        <button class="add-btn" onclick="openModal()">➕ Add Transaction</button>
+      </div>
+    </div>
+
+    <!-- Transactions Table -->
+    <section class="table-box">
+      <table>
+        <thead>
+          <tr>
+            <th>Date</th>
+            <th>Type</th>
+            <th>Category</th>
+            <th>Amount</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+
+        <tbody id="transactionTable">
+          <!-- JS se data aayega -->
+        </tbody>
+      </table>
+    </section>
+
+  </main>
+</div>
+
+<!-- ADD TRANSACTION MODAL -->
+<div class="modal" id="transactionModal">
+  <div class="modal-content">
+
+    <h3>➕ Add Transaction</h3>
+
+    <label>Transaction Type</label>
+    <select id="txnType">
+      <option value="income">Income</option>
+      <option value="expense">Expense</option>
+    </select>
+
+    <label>Category</label>
+    <input type="text" id="txnCategory" placeholder="Food / Salary / Travel">
+
+    <label>Amount</label>
+    <input type="number" id="txnAmount" placeholder="Enter amount">
+
+    <label>Date</label>
+    <input type="date" id="txnDate">
+
+    <div class="modal-actions">
+      <button class="save-btn" onclick="addTransaction()">Save</button>
+      <button class="cancel-btn" onclick="closeModal()">Cancel</button>
+    </div>
+
+  </div>
+</div>
+
+<script>
+/* ================= DATA ================= */
+let transactions = JSON.parse(localStorage.getItem("transactions")) || [];
+
+/* ================= MODAL ================= */
+function openModal() {
+  document.getElementById("transactionModal").style.display = "flex";
+}
+function closeModal() {
+  document.getElementById("transactionModal").style.display = "none";
+}
+
+/* ================= ADD TRANSACTION ================= */
+function addTransaction() {
+  const type = txnType.value;
+  const category = txnCategory.value;
+  const amount = txnAmount.value;
+  const date = txnDate.value;
+
+  if (!category || !amount || !date) {
+    alert("Fill all fields");
+    return;
+  }
+
+  transactions.push({
+    id: Date.now(),
+    type,
+    category,
+    amount,
+    date
+  });
+
+  localStorage.setItem("transactions", JSON.stringify(transactions));
+  closeModal();
+  renderTransactions();
+}
+
+/* ================= RENDER TABLE ================= */
+function renderTransactions(search = "", dateFilter = "") {
+  transactionTable.innerHTML = "";
+
+  transactions
+    .filter(t =>
+      t.category.toLowerCase().includes(search.toLowerCase()) &&
+      (dateFilter === "" || t.date === dateFilter)
+    )
+    .forEach(t => {
+      transactionTable.innerHTML += `
+        <tr>
+          <td>📆 ${new Date(t.date).toDateString()}</td>
+          <td><span class="badge ${t.type}">${t.type}</span></td>
+          <td>${t.category}</td>
+          <td class="${t.type === "income" ? "pos" : "neg"}">
+            ${t.type === "income" ? "+" : "-"} ₹${t.amount}
+          </td>
+          <td><button class="delete-btn" onclick="deleteTxn(${t.id})">Delete</button></td>
+        </tr>
+      `;
+    });
+}
+
+/* ================= DELETE ================= */
+function deleteTxn(id) {
+  transactions = transactions.filter(t => t.id !== id);
+  localStorage.setItem("transactions", JSON.stringify(transactions));
+  renderTransactions();
+}
+
+/* ================= FILTERS ================= */
+searchInput.oninput = () =>
+  renderTransactions(searchInput.value, filterDate.value);
+
+filterDate.onchange = () => {
+  const d = new Date(filterDate.value);
+  dateText.innerText = "📅 " + d.toDateString();
+  renderTransactions(searchInput.value, filterDate.value);
+};
+
+/* ================= INIT ================= */
+txnDate.valueAsDate = new Date();
+renderTransactions();
+</script>
+
+</body>
+</html>

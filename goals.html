@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Goals | Daily Expense Tracker</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<div class="layout">
+
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <h2>💸 Expense Tracker</h2>
+    <ul>
+      <li><a href="dashboard.html">Dashboard</a></li>
+      <li><a href="transactions.html">Transactions</a></li>
+      <li><a href="budget.html">Budget</a></li>
+      <li class="active"><a href="goals.html">Goals</a></li>
+      <li><a href="reports.html">Reports</a></li>
+      <li><a href="settings.html">Settings</a></li>
+    </ul>
+  </aside>
+
+  <!-- Main -->
+  <main class="main">
+
+    <div class="page-header">
+      <h2>Saving Goals</h2>
+      <button class="add-btn" onclick="openGoalModal()">➕ Add Goal</button>
+    </div>
+
+    <!-- Goal Cards -->
+    <section class="budget-cards" id="goalCards">
+      <!-- Goals JS se add honge -->
+    </section>
+
+  </main>
+</div>
+
+<!-- ADD GOAL MODAL -->
+<div class="modal" id="goalModal">
+  <div class="modal-content">
+
+    <h3>🎯 Add Goal</h3>
+
+    <label>Goal Name</label>
+    <input type="text" id="goalName" placeholder="Buy Laptop / Vacation">
+
+    <label>Target Amount</label>
+    <input type="number" id="goalTarget" placeholder="Enter target amount">
+
+    <label>Saved Amount</label>
+    <input type="number" id="goalSaved" placeholder="Amount saved">
+
+    <div class="modal-actions">
+      <button class="save-btn" onclick="saveGoal()">Save</button>
+      <button class="cancel-btn" onclick="closeGoalModal()">Cancel</button>
+    </div>
+
+  </div>
+</div>
+
+<script>
+/* =========================
+   GOALS LOGIC
+========================= */
+
+let goals = JSON.parse(localStorage.getItem("goals")) || [];
+
+function openGoalModal() {
+  document.getElementById("goalModal").style.display = "flex";
+}
+
+function closeGoalModal() {
+  document.getElementById("goalModal").style.display = "none";
+}
+
+function saveGoal() {
+  const name = document.getElementById("goalName").value;
+  const target = document.getElementById("goalTarget").value;
+  const saved = document.getElementById("goalSaved").value;
+
+  if (!name || !target || !saved) {
+    alert("Please fill all fields");
+    return;
+  }
+
+  goals.push({
+    name,
+    target,
+    saved
+  });
+
+  localStorage.setItem("goals", JSON.stringify(goals));
+  closeGoalModal();
+  renderGoals();
+
+  document.getElementById("goalName").value = "";
+  document.getElementById("goalTarget").value = "";
+  document.getElementById("goalSaved").value = "";
+}
+
+function deleteGoal(index) {
+  goals.splice(index, 1);
+  localStorage.setItem("goals", JSON.stringify(goals));
+  renderGoals();
+}
+
+function renderGoals() {
+  const container = document.getElementById("goalCards");
+  container.innerHTML = "";
+
+  goals.forEach((g, index) => {
+    const percent = Math.min((g.saved / g.target) * 100, 100);
+
+    container.innerHTML += `
+      <div class="budget-card">
+        <div class="budget-icon">🎯</div>
+
+        <h4>${g.name}</h4>
+        <p>Target: ₹${g.target}</p>
+
+        <div class="progress">
+          <div class="progress-bar ${
+            percent > 80 ? "safe" :
+            percent > 50 ? "warning" : "danger"
+          }" style="width:${percent}%"></div>
+        </div>
+
+        <span class="used-text">Saved ${Math.round(percent)}%</span>
+
+        <button class="delete-btn" onclick="deleteGoal(${index})">
+          Delete
+        </button>
+      </div>
+    `;
+  });
+}
+
+/* Load goals on page load */
+renderGoals();
+</script>
+
+</body>
+</html>

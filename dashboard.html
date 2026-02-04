@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Dashboard | Daily Expense Tracker</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+<div class="layout">
+
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <h2>💸 Expense Tracker</h2>
+    <ul>
+      <li class="active"><a href="dashboard.html">Dashboard</a></li>
+      <li><a href="transactions.html">Transactions</a></li>
+      <li><a href="budget.html">Budget</a></li>
+      <li><a href="goals.html">Goals</a></li>
+      <li><a href="reports.html">Reports</a></li>
+      <li><a href="settings.html">Settings</a></li>
+    </ul>
+  </aside>
+
+  <!-- Main Content -->
+  <main class="main">
+
+    <!-- Top Bar -->
+    <header class="topbar">
+      <div class="welcome">
+        <span>Welcome, <b>Vipul</b> 👋</span>
+      </div>
+      <button class="theme-btn" onclick="toggleTheme()">🌙</button>
+    </header>
+
+    <!-- Summary Cards -->
+    <section class="cards">
+      <div class="card balance">
+        <span class="icon">💰</span>
+        <p>Total Balance</p>
+        <h3>₹40,500</h3>
+      </div>
+
+      <div class="card income">
+        <span class="icon">📈</span>
+        <p>Income</p>
+        <h3>₹55,000</h3>
+      </div>
+
+      <div class="card expense">
+        <span class="icon">📉</span>
+        <p>Expense</p>
+        <h3>₹14,500</h3>
+      </div>
+    </section>
+
+    <!-- Transactions Table -->
+    <section class="table-box">
+      <h3>Recent Transactions</h3>
+      <table>
+        <tr>
+          <th>Date</th>
+          <th>Category</th>
+          <th>Amount</th>
+        </tr>
+        <tr>
+          <td>10 Feb</td>
+          <td>Food</td>
+          <td class="neg">- ₹250</td>
+        </tr>
+        <tr>
+          <td>09 Feb</td>
+          <td>Salary</td>
+          <td class="pos">+ ₹30,000</td>
+        </tr>
+      </table>
+    </section>
+
+  </main>
+</div>
+
+<script src="js/app.js"></script>
+</body>
+</html>

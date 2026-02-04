@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Budget | Daily Expense Tracker</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<div class="layout">
+
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <h2>💸 Expense Tracker</h2>
+    <ul>
+      <li><a href="dashboard.html">Dashboard</a></li>
+      <li><a href="transactions.html">Transactions</a></li>
+      <li class="active"><a href="budget.html">Budget</a></li>
+      <li><a href="goals.html">Goals</a></li>
+      <li><a href="reports.html">Reports</a></li>
+      <li><a href="settings.html">Settings</a></li>
+    </ul>
+  </aside>
+
+  <!-- Main -->
+  <main class="main">
+
+    <div class="page-header">
+      <h2>Budget Overview</h2>
+      <button class="add-btn" onclick="openBudgetModal()">➕ Add Category</button>
+    </div>
+
+    <!-- Budget Cards -->
+    <section class="budget-cards" id="budgetCards">
+      <!-- JS se cards add honge -->
+    </section>
+
+    <!-- Alert -->
+    <div class="budget-alert" id="budgetAlert" style="display:none;">
+      ⚠ Budget used above 80%
+    </div>
+
+  </main>
+</div>
+
+<!-- ADD BUDGET MODAL -->
+<div class="modal" id="budgetModal">
+  <div class="modal-content">
+
+    <h3>➕ Set Budget</h3>
+
+    <label>Category</label>
+    <input type="text" id="budgetCategory" placeholder="Food / Travel / Shopping">
+
+    <label>Monthly Limit</label>
+    <input type="number" id="budgetAmount" placeholder="Enter amount">
+
+    <div class="modal-actions">
+      <button class="save-btn" onclick="saveBudget()">Save</button>
+      <button class="cancel-btn" onclick="closeBudgetModal()">Cancel</button>
+    </div>
+
+  </div>
+</div>
+
+<script>
+/* =========================
+   ICON BY CATEGORY
+========================= */
+function getCategoryIcon(category) {
+  category = category.toLowerCase();
+
+  if (category.includes("food")) return "🍔";
+  if (category.includes("shopping")) return "🛍️";
+  if (category.includes("travel")) return "✈️";
+  if (category.includes("rent")) return "🏠";
+  if (category.includes("education")) return "📚";
+  if (category.includes("gym")) return "🏋️";
+  if (category.includes("internet")) return "📶";
+  if (category.includes("medical")) return "💊";
+  if (category.includes("salary")) return "💼";
+
+  return "💰";
+}
+
+/* =========================
+   BUDGET LOGIC
+========================= */
+
+let budgets = JSON.parse(localStorage.getItem("budgets")) || [];
+
+function openBudgetModal() {
+  document.getElementById("budgetModal").style.display = "flex";
+}
+
+function closeBudgetModal() {
+  document.getElementById("budgetModal").style.display = "none";
+}
+
+function saveBudget() {
+  const category = document.getElementById("budgetCategory").value;
+  const amount = document.getElementById("budgetAmount").value;
+
+  if (!category || !amount) {
+    alert("Please fill all fields");
+    return;
+  }
+
+  const existing = budgets.find(b => b.category.toLowerCase() === category.toLowerCase());
+
+  if (existing) {
+    existing.amount = amount;
+  } else {
+    budgets.push({ category, amount, used: 0 });
+  }
+
+  localStorage.setItem("budgets", JSON.stringify(budgets));
+  closeBudgetModal();
+  renderBudgets();
+
+  document.getElementById("budgetCategory").value = "";
+  document.getElementById("budgetAmount").value = "";
+}
+
+function deleteBudget(index) {
+  budgets.splice(index, 1);
+  localStorage.setItem("budgets", JSON.stringify(budgets));
+  renderBudgets();
+}
+
+function renderBudgets() {
+  const container = document.getElementById("budgetCards");
+  const alertBox = document.getElementById("budgetAlert");
+
+  container.innerHTML = "";
+  alertBox.style.display = "none";
+
+  budgets.forEach((b, index) => {
+    const percent = Math.min((b.used / b.amount) * 100 || 0, 100);
+    const icon = getCategoryIcon(b.category);
+
+    if (percent > 80) {
+      alertBox.style.display = "block";
+    }
+
+    container.innerHTML += `
+      <div class="budget-card">
+        <div class="budget-icon">${icon}</div>
+
+        <h4>${b.category}</h4>
+        <p>Limit: ₹${b.amount}</p>
+
+        <div class="progress">
+          <div class="progress-bar ${
+            percent > 80 ? "danger" :
+            percent > 60 ? "warning" : "safe"
+          }" style="width:${percent}%"></div>
+        </div>
+
+        <span class="used-text">Used ${Math.round(percent)}%</span>
+
+        <button class="delete-btn" onclick="deleteBudget(${index})">
+          Delete
+        </button>
+      </div>
+    `;
+  });
+}
+
+/* Load budgets */
+renderBudgets();
+</script>
+
+</body>
+</html>
